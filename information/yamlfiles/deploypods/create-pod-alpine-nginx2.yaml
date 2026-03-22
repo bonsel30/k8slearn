@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginxalpine-pod
+  namespace: nginxalpine-ns
+spec:
+  containers:
+  - name: nginxalpine
+    image: nginx:1.29.6-alpine
+    ports:
+    - containerPort: 80

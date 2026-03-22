@@ -1,0 +1,1 @@
+kubectl apply -f https://dev.azure.com/RIVMNL/cpt-jbonsel/_git/k8s?path=/information/yamlfiles/deploypods/deploy-alpine-nginx.yaml&version=GBmain

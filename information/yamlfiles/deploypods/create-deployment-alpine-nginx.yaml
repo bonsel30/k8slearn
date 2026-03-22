@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginxalpine-deployment
+  namespace: nginxalpine-ns
+  labels:
+    app: nginxalpine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginxalpine
+  template:
+    metadata:
+      labels:
+        app: nginxalpine
+    spec:
+      containers:
+      - name: nginxalpine
+        image: nginx:1.29.6-alpine
+        ports:
+        - containerPort: 80

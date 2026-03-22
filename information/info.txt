@@ -1,0 +1,15 @@
+
+https://www.plural.sh/blog/install-kubernetes-ubuntu-tutorial/
+https://www.cherryservers.com/blog/install-kubernetes-ubuntu
+https://www.zenarmor.com/docs/linux-tutorials/how-to-install-kubernetes-on-ubuntu
+
+
+
+https://medium.com/cypik/installing-and-setting-up-kubectl-on-linux-or-ubuntu-37fe99623f8e
+
+
+
+https://github.com/bmuschko/cka-study-guide
+
+Node 1	control-node1	10.0.0.4
+Node 2	worker-node1	10.0.0.5

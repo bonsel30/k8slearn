@@ -80,5 +80,7 @@ watch kubectl get tigerastatus
 
 #join worker node:
 sudo kubeadm join 10.0.0.4:6443 --token gte3di.xe53uf0w2b280208 --discovery-token-ca-cert-hash sha256:50e57ddd413c6930d4f8ff17beac8b936f62468a89578525893fab593ab96269
+#sudo kubeadm token create --print-join-command
+
 #To verify:
 kubectl get nodes

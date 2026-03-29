@@ -1,5 +1,8 @@
 kubectl get pods -A
 kubectl describe pod etcd-control-node1 -n kube-system
+# of:
+kubectl describe pod etcd-control-node1 -n kube-system | grep -e crt -e key
+kubectl describe pod etcd-control-node1 -n kube-system | grep -e server. -e ca.
 
 sudo ETCDCTL_API=3 etcdctl --cacert=/etc/kubernetes/pki/etcd/ca.crt \
 > --cert=/etc/kubernetes/pki/etcd/server.crt \

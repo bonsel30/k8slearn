@@ -5,3 +5,6 @@ ETCDCTL_API=3 etcdctl --endpoints 10.0.0.4:2379 \
   --key=/etc/kubernetes/pki/etcd/server.key \
   --cacert=/etc/kubernetes/pki/etcd/ca.crt \
   member list
+
+# Alle kubernetes resources plus api versie
+kubectl api-resources | sort

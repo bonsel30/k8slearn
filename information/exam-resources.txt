@@ -1,0 +1,14 @@
+
+Use the browser within the VM to access the following documentation: 
+
+Kubernetes Documentation https://kubernetes.io/docs
+
+Note that using the search function on https://kubernetes.io/docs/ is allowed, but you must not open external search results.
+
+Kubernetes Blog https://kubernetes.io/blog/ 
+
+Helm Documentation https://helm.sh/docs 
+
+Task-specific documentation provided in the Quick Reference box. This includes links to documentation for various tools that might be needed to solve a task. 
+
+CKA only: Gateway API Documentation https://gateway-api.sigs.k8s.io

@@ -11,5 +11,6 @@ https://medium.com/cypik/installing-and-setting-up-kubectl-on-linux-or-ubuntu-37
 
 https://github.com/bmuschko/cka-study-guide
 
-Node 1	control-node1	10.0.0.4
-Node 2	worker-node1	10.0.0.5
+Control 1	control-node1	10.0.0.4
+Worker 1	worker-node1	10.0.0.5
+Worker 2	worker-node1	10.0.0.6

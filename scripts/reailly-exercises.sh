@@ -29,3 +29,8 @@ kubectl delete role pod-reader
 
 ###ROLEBINDING###
 kubectl create rolebinding readonly-pods-binding --role=pod-reader --user=new-admin
+
+###create service account
+kubectl get serviceaccounts
+
+kubectl create serviceaccount jeroenbot1

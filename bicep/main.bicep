@@ -13,6 +13,9 @@ param workernode2name string
 param workernode3name string
 param controlnodename string
 
+@secure()
+param vmadminpassword string
+
 param nsgname string
 
 resource k8sRG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
@@ -92,6 +95,7 @@ module node1 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
     adminUsername: 'azureuser'
     patchMode: 'ImageDefault'
     provisionVMAgent:true
+    adminPassword:vmadminpassword
   }
 }
 
@@ -151,6 +155,7 @@ module node2 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
     adminUsername: 'azureuser'
     patchMode: 'ImageDefault'
     provisionVMAgent:true
+    adminPassword:vmadminpassword
   }
 }
 
@@ -210,6 +215,7 @@ module node3 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
     adminUsername: 'azureuser'
     patchMode: 'ImageDefault'
     provisionVMAgent:true
+    adminPassword:vmadminpassword
   }
 }
 
@@ -273,6 +279,7 @@ module controlnode 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
     adminUsername: 'azureuser'
     patchMode: 'ImageDefault'
     provisionVMAgent:true
+    adminPassword:vmadminpassword
   }
 }
 

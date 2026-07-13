@@ -1,0 +1,12 @@
+using './main.bicep'
+
+param VnetName = 'k8s-test'
+param VnetIpRange = '10.0.0.0/23'
+param Location = 'northeurope'
+param subnet1Name = 'subnet1'
+param controlnodename = 'control-node'
+param workernode1name = 'worker-node1'
+param workernode2name = 'worker-node2'
+param workernode3name = 'worker-node3'
+param subnetIpRange = '10.0.0.0/24'
+param nsgname = 'k8s-nsg'

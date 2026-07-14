@@ -1,6 +1,7 @@
 targetScope = 'subscription'
 
 param RGName string
+
 param Location string
 param VnetName string
 
@@ -59,6 +60,7 @@ module node1 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
         name: workernode1name
         nicSuffix: '-nic'
         networkSecurityGroupResourceId:nsg.outputs.resourceId
+        enableAcceleratedNetworking: false
         ipConfigurations: [
           {
             subnetResourceId: k8svnet.outputs.subnetResourceIds[0]
@@ -120,6 +122,7 @@ module node2 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
         name: workernode2name
         nicSuffix: '-nic'
         networkSecurityGroupResourceId:nsg.outputs.resourceId
+        enableAcceleratedNetworking: false
         ipConfigurations: [
           {
             subnetResourceId: k8svnet.outputs.subnetResourceIds[0]
@@ -181,6 +184,7 @@ module node3 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
         name: workernode3name
         nicSuffix: '-nic'
         networkSecurityGroupResourceId:nsg.outputs.resourceId
+        enableAcceleratedNetworking: false
         ipConfigurations: [
           {
             subnetResourceId: k8svnet.outputs.subnetResourceIds[0]
@@ -239,6 +243,7 @@ module controlnode 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
         name: controlnodename
         nicSuffix: '-nic'
         networkSecurityGroupResourceId:nsg.outputs.resourceId
+        enableAcceleratedNetworking: false
         ipConfigurations: [
           {
             subnetResourceId: k8svnet.outputs.subnetResourceIds[0]
@@ -307,6 +312,7 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           protocol: 'Tcp'
           description: 'Allow ssh inbound'
           destinationPortRange: '22'
+          sourcePortRange:'*'
           destinationAddressPrefix:subnetIpRange
           sourceAddressPrefixes:[
             subnetIpRange
@@ -321,6 +327,8 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 201
           protocol: 'Tcp'
+          destinationPortRange: '6443'
+          sourcePortRange:'*'
           destinationAddressPrefix:subnetIpRange
           sourceAddressPrefixes:[
             subnetIpRange
@@ -335,6 +343,8 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 202
           protocol: 'Tcp'
+          sourcePortRange:'*'
+          destinationAddressPrefix:subnetIpRange
           destinationPortRanges:[
             '30000-32767'
           ]
@@ -351,6 +361,7 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 203
           protocol: 'Tcp'
+          sourcePortRange:'*'
           destinationPortRange: '10250'
           sourceAddressPrefix:subnetIpRange
           destinationAddressPrefix:subnetIpRange
@@ -363,6 +374,8 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 204
           protocol: 'Icmp'
+          sourcePortRange:'*'
+          destinationPortRange: '*'
           destinationAddressPrefix:subnetIpRange
           sourceAddressPrefix:subnetIpRange
         }
@@ -376,6 +389,8 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           protocol: '*'
           sourceAddressPrefix:'*'
           destinationAddressPrefix:'*'
+          sourcePortRange:'*'
+          destinationPortRange: '*'
         }
       }
     ]
@@ -386,8 +401,8 @@ module privdnszone 'br/public:avm/res/network/private-dns-zone:0.8.1' = {
   name:'privdnszone'
   scope: k8sRG
   params: {
-    name: 'k8slearn.local'
-    location:Location
+    name: 'k8slearn.test'
+    location:'global'
     virtualNetworkLinks: [
       {
         virtualNetworkResourceId: k8svnet.outputs.resourceId

@@ -1,6 +1,6 @@
 using './main.bicep'
 
-param RGName = 'k8s-learn'
+param RGName = 'k8slearn'
 param VnetName = 'k8s-test'
 param VnetIpRange = '10.0.0.0/23'
 param Location = 'northeurope'
@@ -12,3 +12,4 @@ param workernode3name = 'worker-node3'
 param subnetIpRange = '10.0.0.0/24'
 param nsgname = 'k8s-nsg'
 param vmadminpassword = ''
+param PublicIPLearner = ''

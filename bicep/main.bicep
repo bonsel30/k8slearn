@@ -1,5 +1,6 @@
 targetScope = 'subscription'
 
+param RGName string
 param Location string
 param VnetName string
 
@@ -18,11 +19,14 @@ param vmadminpassword string
 
 param nsgname string
 
+param PublicIPLearner string
+
 resource k8sRG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
-  name: 'k8s-learn'
+  name: RGName
   location: Location
 }
 module k8svnet 'br/public:avm/res/network/virtual-network:0.9.0' = {
+  name:'k8svnet'
   scope: k8sRG
   params: {
     name: VnetName
@@ -40,6 +44,7 @@ module k8svnet 'br/public:avm/res/network/virtual-network:0.9.0' = {
 }
 
 module node1 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
+  name:'node1'
   scope: k8sRG
   dependsOn: [
     controlnode
@@ -100,6 +105,7 @@ module node1 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
 }
 
 module node2 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
+  name:'node2'
   scope: k8sRG
   dependsOn: [
     controlnode
@@ -160,6 +166,7 @@ module node2 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
 }
 
 module node3 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
+  name:'node3'
   dependsOn: [
     controlnode
   ]
@@ -220,6 +227,7 @@ module node3 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
 }
 
 module controlnode 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
+  name:'controlnode'
   scope: k8sRG
   params: {
     name: controlnodename
@@ -284,13 +292,14 @@ module controlnode 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
 }
 
 module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
+  name:'nsg'
   scope: k8sRG
   params: {
     name: nsgname
     location:Location
     securityRules:[
       {
-        name: 'allow-ssh'
+        name: 'allow-ssh-all'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
@@ -298,8 +307,91 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           protocol: 'Tcp'
           description: 'Allow ssh inbound'
           destinationPortRange: '22'
-          sourceAddressPrefix: '*'
+          destinationAddressPrefix:subnetIpRange
+          sourceAddressPrefixes:[
+            subnetIpRange
+            PublicIPLearner
+          ]
         }
+      }
+      {
+        name: 'allow-k8s-api'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          priority: 201
+          protocol: 'Tcp'
+          destinationAddressPrefix:subnetIpRange
+          sourceAddressPrefixes:[
+            subnetIpRange
+            PublicIPLearner
+          ]
+        }
+      }
+      {
+        name: 'allow-node-ports'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          priority: 202
+          protocol: 'Tcp'
+          destinationPortRanges:[
+            '30000-32767'
+          ]
+          sourceAddressPrefixes:[
+            subnetIpRange
+            PublicIPLearner
+          ]
+        }
+      }
+      {
+        name: 'nodemanagement'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          priority: 203
+          protocol: 'Tcp'
+          destinationPortRange: '10250'
+          sourceAddressPrefix:subnetIpRange
+          destinationAddressPrefix:subnetIpRange
+        }
+      }
+      {
+        name: 'allow-ping'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          priority: 204
+          protocol: 'Icmp'
+          destinationAddressPrefix:subnetIpRange
+          sourceAddressPrefix:subnetIpRange
+        }
+      }
+      {
+        name: 'deny-all'
+        properties: {
+          access: 'Deny'
+          direction: 'Inbound'
+          priority: 1000
+          protocol: '*'
+          sourceAddressPrefix:'*'
+          destinationAddressPrefix:'*'
+        }
+      }
+    ]
+  }
+}
+
+module privdnszone 'br/public:avm/res/network/private-dns-zone:0.8.1' = {
+  name:'privdnszone'
+  scope: k8sRG
+  params: {
+    name: 'k8slearn.local'
+    location:Location
+    virtualNetworkLinks: [
+      {
+        virtualNetworkResourceId: k8svnet.outputs.resourceId
+        registrationEnabled:true
       }
     ]
   }

@@ -1,10 +1,12 @@
 ssh jeroen@20.54.73.250
 
+#update apt and installed packages
 sudo apt update && sudo apt upgrade -y
 
-sudo modprobe overlay
-sudo modprobe br_netfilter
-
+#Install containerd and requirements
+#Configure sysctl for networking
+#modprobe is a command-line utility that adds and removes modules from the Linux kernel. 
+#It loads a module by name, automatically loads any modules it depends on, and applies the options defined in /etc/modprobe.d/.
 #Create a configuration file as shown and specify the modules to load them permanently.
 
 sudo tee /etc/modules-load.d/k8s.conf <<EOF
@@ -12,33 +14,39 @@ overlay
 br_netfilter
 EOF
 
+sudo modprobe overlay
+sudo modprobe br_netfilter
+
 #Create a Kubernetes configuration file in the /etc/sysctl.d/ directory.
 
 sudo nano /etc/sysctl.d/k8s.conf
-#Add the following lines:
+
+#Add the following lines to /etc/sysctl.d/k8s.conf:
 
 net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1
 net.ipv4.ip_forward   = 1
 
 #Kubernetes relies on a container runtime. We’ll use containerd, a widely supported and performant option:
-
+#install containerd with apt
 sudo apt install -y containerd
 
 # Generate default config
+# Configure containerd for systemd cgroup driver
 sudo mkdir -p /etc/containerd
 containerd config default | sudo tee /etc/containerd/config.toml
 
-sudo nano /etc/containerd/config.toml
+# sudo nano /etc/containerd/config.toml
 # Then find SystemdCgroup change its value from false to true
-
-sudo systemctl restart containerd;sudo reboot
+# You can use sed to swap in true
+sudo sed -i 's/            SystemdCgroup = false/            SystemdCgroup = true/' /etc/containerd/config.toml
 
 # Enable and start the service
+# sudo systemctl restart containerd;sudo reboot
 sudo systemctl restart containerd
 sudo systemctl enable containerd
 
-#Install kubeadm, kubelet, and kubectl
+#############Install kubeadm, kubelet, and kubectl
 #Run these commands on all nodes (control plane and workers):
 
 sudo apt-get update

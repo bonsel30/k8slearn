@@ -1,5 +1,6 @@
 #https://www.freecodecamp.org/news/prepare-for-the-kubernetes-administrator-certification-and-pass-2026-update/
 #https://lucaberton.com/blog/install-kubectl-debian-12/
+# calico installation: https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
 
 #ssh in to control node using public ip.
 #new day: turn on vm's (autoshutsown)
@@ -26,7 +27,10 @@ sudo nano /etc/sysctl.d/k8s.conf
 #Add the following lines to /etc/sysctl.d/k8s.conf:
 net.bridge.bridge-nf-call-iptables  = 1
 net.bridge.bridge-nf-call-ip6tables = 1
-net.ipv4.ip_forward   = 1
+net.ipv4.ip_forward = 1
+
+# Apply sysctl params without reboot
+sudo sysctl --system
 
 #Kubernetes relies on a container runtime. We’ll use containerd, a widely supported and performant option:
 #install containerd with apt
@@ -67,34 +71,67 @@ sudo apt-get install -y apt-transport-https ca-certificates curl gnupg
 #Download the public signing key for the Kubernetes package repositories. The same signing key is used for all repositories so you can disregard the version in the URL:
 #If the folder `/etc/apt/keyrings` does not exist, it should be created before the curl command, read the note below.
 #sudo mkdir -p -m 755 /etc/apt/keyrings
-curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key |sudo sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.36/deb/Release.key |sudo sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 sudo chmod 644 /etc/apt/keyrings/kubernetes-apt-keyring.gpg #allow unprivileged APT programs to read this keyring
 
 #This overwrites any existing configuration in /etc/apt/sources.list.d/kubernetes.list
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.36/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list   #helps tools such as command-not-found to work correctly
 
+#Update the package list and use apt-cache policy to inspect versions available in the repository
+sudo apt-get update
+apt-cache policy kubelet | head -n 20 
+# kubelet:
+#   Installed: (none)
+#   Candidate: 1.36.5-1.1
+#   Version table:
+#      1.36.5-1.1 500
+#         500 https://pkgs.k8s.io/core:/stable:/v1.36/deb  Packages
+#      1.36.4-1.1 500
+#         500 https://pkgs.k8s.io/core:/stable:/v1.36/deb  Packages
+#      1.36.3-1.1 500
+#         500 https://pkgs.k8s.io/core:/stable:/v1.36/deb  Packages
+#      1.36.2-2.1 500
+#         500 https://pkgs.k8s.io/core:/stable:/v1.36/deb  Packages
+#      1.36.1-1.1 500
+#         500 https://pkgs.k8s.io/core:/stable:/v1.36/deb  Packages
+#      1.36.0-1.1 500
+#         500 https://pkgs.k8s.io/core:/stable:/v1.36/deb  Packages
+
 sudo apt update
-sudo apt install -y kubelet kubeadm kubectl
+#Install the required packages, if needed we can request a specific version. 
+#Use this version because in a later course we will upgrade the cluster to a newer version.
+#Try to pick one version back because later in this series, we'll run an upgrade
+VERSION=1.36.4-1.1
+sudo apt-get install -y kubelet=$VERSION kubeadm=$VERSION kubectl=$VERSION 
 
 #Prevent automatic updates
-sudo apt-mark hold kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl containerd
 
 #Initialize the Control Plane (on Master Node Only)
 #Now on your control-plane node only, run:
-
+# De standaard CIDR-range die Calico gebruikt bij een standaardinstallatie via de Tigera Operator is 192.168.0.0/16
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16
-
+sudo kubeadm init --kubernetes-version v1.29.1
 #use kubectl without sudo:
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-#install CNI
-#oude versie: kubectl apply -f https://raw.githubusercontent.com/projectcalico/calico/v3.27.0/manifests/calico.yaml
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.4/manifests/tigera-operator.yaml
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.31.4/manifests/custom-resources.yaml
+#install CNI https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
+# If your cluster is based on Kubernetes 1.36 or later:
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
+kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
 
+kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
+kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
+kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
+
+# kijken wat er in deze bestanden staat:
+# 
+# curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
+# curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources-bpf.yaml
 watch kubectl get tigerastatus
 
 #join worker node:
@@ -103,3 +140,12 @@ sudo kubeadm join 10.0.0.4:6443 --token gte3di.xe53uf0w2b280208 --discovery-toke
 
 #To verify:
 kubectl get nodes
+
+# Install bash-completion if it isn't already present
+sudo apt install -y bash-completion
+
+# Enable kubectl completion for the current user
+echo 'source <(kubectl completion bash)' >> ~/.bashrc
+echo 'alias k=kubectl' >> ~/.bashrc
+echo 'complete -o default -F __start_kubectl k' >> ~/.bashrc
+source ~/.bashrc

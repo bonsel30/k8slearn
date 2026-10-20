@@ -112,7 +112,7 @@ sudo apt-mark hold kubelet kubeadm kubectl containerd
 #Now on your control-plane node only, run:
 # De standaard CIDR-range die Calico gebruikt bij een standaardinstallatie via de Tigera Operator is 192.168.0.0/16
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16
-sudo kubeadm init --kubernetes-version v1.29.1
+# sudo kubeadm init --kubernetes-version v1.36.4
 #use kubectl without sudo:
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
@@ -124,19 +124,23 @@ kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
 
-kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
-kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
-kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
+# calico weer weghalen:
+# kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
+# kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
+# kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
 
 # kijken wat er in deze bestanden staat:
 # 
 # curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
-# curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources-bpf.yaml
+# curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
+# curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
 watch kubectl get tigerastatus
 
 #join worker node:
 sudo kubeadm join 10.0.0.4:6443 --token gte3di.xe53uf0w2b280208 --discovery-token-ca-cert-hash sha256:50e57ddd413c6930d4f8ff17beac8b936f62468a89578525893fab593ab96269
-#sudo kubeadm token create --print-join-command
+
+# join commando opvragen
+sudo kubeadm token create --print-join-command
 
 #To verify:
 kubectl get nodes

@@ -39,6 +39,7 @@ module k8svnet 'br/public:avm/res/network/virtual-network:0.9.0' = {
       {
         name: subnet1Name
         addressPrefix: subnetIpRange
+        networkSecurityGroupResourceId:nsg.outputs.resourceId
       }
     ]
   }
@@ -59,7 +60,6 @@ module node1 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
         deleteOption: 'Delete'
         name: workernode1name
         nicSuffix: '-nic'
-        networkSecurityGroupResourceId:nsg.outputs.resourceId
         enableAcceleratedNetworking: false
         ipConfigurations: [
           {
@@ -121,7 +121,6 @@ module node2 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
         deleteOption: 'Delete'
         name: workernode2name
         nicSuffix: '-nic'
-        networkSecurityGroupResourceId:nsg.outputs.resourceId
         enableAcceleratedNetworking: false
         ipConfigurations: [
           {
@@ -183,7 +182,6 @@ module node3 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
         deleteOption: 'Delete'
         name: workernode3name
         nicSuffix: '-nic'
-        networkSecurityGroupResourceId:nsg.outputs.resourceId
         enableAcceleratedNetworking: false
         ipConfigurations: [
           {
@@ -242,7 +240,6 @@ module controlnode 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
         deleteOption: 'Delete'
         name: controlnodename
         nicSuffix: '-nic'
-        networkSecurityGroupResourceId:nsg.outputs.resourceId
         enableAcceleratedNetworking: false
         ipConfigurations: [
           {
@@ -381,12 +378,25 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
         }
       }
       {
+        name: 'allow-whisker-calico'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          priority: 205
+          protocol: 'Icmp'
+          sourcePortRange:'*'
+          destinationPortRange: '8443'
+          destinationAddressPrefix:subnetIpRange
+          sourceAddressPrefix:PublicIPLearner
+        }
+      }
+      {
         name: 'deny-all'
         properties: {
           access: 'Deny'
           direction: 'Inbound'
           priority: 1000
-          protocol: '*'
+          protocol: 'Tcp'
           sourceAddressPrefix:'*'
           destinationAddressPrefix:'*'
           sourcePortRange:'*'

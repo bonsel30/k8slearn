@@ -5,7 +5,7 @@ metadata:
 spec:
   type: NodePort
   selector:
-    app.kubernetes.io/name=whisker
+    app: whisker
   ports:
   - port: 4000
     targetPort: 8443

@@ -147,7 +147,6 @@ kubectl get nodes
 
 # Install bash-completion if it isn't already present
 sudo apt install -y bash-completion
-
 # Enable kubectl completion for the current user
 echo 'source <(kubectl completion bash)' >> ~/.bashrc
 echo 'alias k=kubectl' >> ~/.bashrc

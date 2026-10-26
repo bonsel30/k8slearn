@@ -421,3 +421,6 @@ module privdnszone 'br/public:avm/res/network/private-dns-zone:0.8.1' = {
     ]
   }
 }
+
+
+output publicIpControlNode array = controlnode.outputs.nicConfigurations

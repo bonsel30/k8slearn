@@ -2,6 +2,14 @@
 #https://lucaberton.com/blog/install-kubectl-debian-12/
 # calico installation: https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
 
+# • Azure CNI Overlay: 10.244.0.0/16 (provides 65,536 addresses, allocating a /24 per node)
+# • Flannel CNI: 10.244.0.0/16 (standard default across many Kubernetes tutorials and manifests)
+# • Calico CNI: 192.168.0.0/16 (common default in many Calico manifests)
+# • MicroK8s CNI: 10.1.0.0/16
+# • Cilium CNI (default native IPAM): 10.0.0.0/8 (though often overridden to match Kubernetes cluster-cidr like 10.42.0.0/16 in tools like RKE2)
+
+
+
 #ssh in to control node using public ip.
 #new day: turn on vm's (autoshutsown)
 
@@ -112,17 +120,25 @@ sudo apt-mark hold kubelet kubeadm kubectl containerd
 #Now on your control-plane node only, run:
 # De standaard CIDR-range die Calico gebruikt bij een standaardinstallatie via de Tigera Operator is 192.168.0.0/16
 sudo kubeadm init --pod-network-cidr=192.168.0.0/16
-# sudo kubeadm init --kubernetes-version v1.36.4
+# Flanel:
+sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+# sudo kubeadm init --kubernetes-version v1.36.4 --pod-network-cidr=10.244.0.0/16
 #use kubectl without sudo:
 mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
-#install CNI https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
+#install CNI 
+#Calico
+#https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
 # If your cluster is based on Kubernetes 1.36 or later:
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
+
+#Flanel
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
 # calico weer weghalen:
 # kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml

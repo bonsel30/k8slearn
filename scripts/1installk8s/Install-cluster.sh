@@ -1,13 +1,3 @@
-#https://www.freecodecamp.org/news/prepare-for-the-kubernetes-administrator-certification-and-pass-2026-update/
-#https://lucaberton.com/blog/install-kubectl-debian-12/
-# calico installation: https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
-
-# • Azure CNI Overlay: 10.244.0.0/16 (provides 65,536 addresses, allocating a /24 per node)
-# • Flannel CNI: 10.244.0.0/16 (standard default across many Kubernetes tutorials and manifests)
-# • Calico CNI: 192.168.0.0/16 (common default in many Calico manifests)
-# • MicroK8s CNI: 10.1.0.0/16
-# • Cilium CNI (default native IPAM): 10.0.0.0/8 (though often overridden to match Kubernetes cluster-cidr like 10.42.0.0/16 in tools like RKE2)
-
 #ssh in to control node using public ip.
 #new day: turn on vm's (autoshutsown)
 

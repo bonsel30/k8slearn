@@ -11,3 +11,5 @@ spec:
     targetPort: 80
     nodePort: 30080
     protocol: TCP
+
+# k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/deploypods/create-sevice.yml -n nginxalpine-ns

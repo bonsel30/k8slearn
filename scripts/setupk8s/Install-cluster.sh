@@ -8,8 +8,6 @@
 # • MicroK8s CNI: 10.1.0.0/16
 # • Cilium CNI (default native IPAM): 10.0.0.0/8 (though often overridden to match Kubernetes cluster-cidr like 10.42.0.0/16 in tools like RKE2)
 
-
-
 #ssh in to control node using public ip.
 #new day: turn on vm's (autoshutsown)
 

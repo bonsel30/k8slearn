@@ -1,6 +1,6 @@
 Connect-AzAccount
 
-Set-AzContext -Subscription rivm-az-cpt-jbonsel-sandbox
+Set-AzContext -Subscription xxxx
 
 # curl whatismyip.com #werkt niet meer....
 # dit werkt wel:

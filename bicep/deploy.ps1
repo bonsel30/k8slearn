@@ -4,7 +4,7 @@ Set-AzContext -Subscription xxxx
 
 # curl whatismyip.com #werkt niet meer....
 # dit werkt wel:
-Invoke-RestMethod https://api.ipify.org
+# Invoke-RestMethod https://api.ipify.org
 $PublicIPLearner = Invoke-RestMethod https://api.ipify.org
 
 #publicip wordt gebruikt in d ensg om alleen daarvan ssh toe te laten

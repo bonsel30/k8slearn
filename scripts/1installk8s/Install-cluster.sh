@@ -79,8 +79,10 @@ sudo apt-get update
 apt-cache policy kubelet | head -n 20 
 # kubelet:
 #   Installed: (none)
-#   Candidate: 1.36.5-1.1
+#   Candidate: 1.36.6-1.1
 #   Version table:
+#      1.36.6-1.1 500
+#         500 https://pkgs.k8s.io/core:/stable:/v1.36/deb  Packages
 #      1.36.5-1.1 500
 #         500 https://pkgs.k8s.io/core:/stable:/v1.36/deb  Packages
 #      1.36.4-1.1 500
@@ -98,7 +100,7 @@ sudo apt update
 #Install the required packages, if needed we can request a specific version. 
 #Use this version because in a later course we will upgrade the cluster to a newer version.
 #Try to pick one version back because later in this series, we'll run an upgrade
-VERSION=1.36.4-1.1
+VERSION=1.36.5-1.1
 sudo apt-get install -y kubelet=$VERSION kubeadm=$VERSION kubectl=$VERSION 
 
 #Prevent automatic updates
@@ -123,10 +125,11 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 # If your cluster is based on Kubernetes 1.36 or later:
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
-kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
+  # kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
+kubectl create -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/calico-vxlan/customresources.yaml
 
-#Flanel
-kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
+watch kubectl get tigerastatus
+
 
 # calico weer weghalen:
 # kubectl delete -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
@@ -138,7 +141,9 @@ kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/
 # curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
 # curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
 # curl -O https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
-watch kubectl get tigerastatus
+
+#Flanel
+kubectl apply -f https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 
 #join worker node:
 sudo kubeadm join 10.0.0.4:6443 --token gte3di.xe53uf0w2b280208 --discovery-token-ca-cert-hash sha256:50e57ddd413c6930d4f8ff17beac8b936f62468a89578525893fab593ab96269

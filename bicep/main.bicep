@@ -390,42 +390,34 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           sourceAddressPrefix:PublicIPLearner
         }
       }
-      // not sure if needed
-      // {
-      //   name: 'allow-k8s-tcp-ports'
-      //   properties: {
-      //     access: 'Allow'
-      //     direction: 'Inbound'
-      //     priority: 206
-      //     protocol: 'Tcp'
-      //     destinationPortRanges: [
-      //       '179'
-      //       '5473'
-      //     ]
-      //     sourcePortRange:'*'
-      //     destinationAddressPrefix:subnetIpRange
-      //     sourceAddressPrefixes:[
-      //       subnetIpRange
-      //       PublicIPLearner
-      //     ]
-      //   }
-      // }
       {
+        name: 'calico-bpg-port'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          priority: 206
+          protocol: 'Tcp'
+          destinationPortRanges: [
+            '179'
+          ]
+          sourcePortRange:'*'
+          destinationAddressPrefix:subnetIpRange
+          sourceAddressPrefix:subnetIpRange
+        }
+      }
+            {
         name: 'Calico-vxlan-mode'
         properties: {
           access: 'Allow'
           direction: 'Inbound'
-          priority: 207
+          priority: 208
           protocol: 'Udp'
           destinationPortRanges: [
             '4789'
           ]
           sourcePortRange:'*'
           destinationAddressPrefix:subnetIpRange
-          sourceAddressPrefixes:[
-            subnetIpRange
-            PublicIPLearner
-          ]
+          sourceAddressPrefix:subnetIpRange
         }
       }
       {

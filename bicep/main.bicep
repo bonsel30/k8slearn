@@ -27,7 +27,7 @@ resource k8sRG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   location: Location
 }
 module k8svnet 'br/public:avm/res/network/virtual-network:0.9.0' = {
-  name:'k8svnet'
+  name: 'k8svnet'
   scope: k8sRG
   params: {
     name: VnetName
@@ -39,14 +39,14 @@ module k8svnet 'br/public:avm/res/network/virtual-network:0.9.0' = {
       {
         name: subnet1Name
         addressPrefix: subnetIpRange
-        networkSecurityGroupResourceId:nsg.outputs.resourceId
+        networkSecurityGroupResourceId: nsg.outputs.resourceId
       }
     ]
   }
 }
 
 module node1 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
-  name:'node1'
+  name: 'node1'
   scope: k8sRG
   dependsOn: [
     controlnode
@@ -101,13 +101,13 @@ module node1 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
     vmSize: 'Standard_B2ms'
     adminUsername: 'azureuser'
     patchMode: 'ImageDefault'
-    provisionVMAgent:true
-    adminPassword:vmadminpassword
+    provisionVMAgent: true
+    adminPassword: vmadminpassword
   }
 }
 
 module node2 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
-  name:'node2'
+  name: 'node2'
   scope: k8sRG
   dependsOn: [
     controlnode
@@ -162,13 +162,13 @@ module node2 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
     vmSize: 'Standard_B2ms'
     adminUsername: 'azureuser'
     patchMode: 'ImageDefault'
-    provisionVMAgent:true
-    adminPassword:vmadminpassword
+    provisionVMAgent: true
+    adminPassword: vmadminpassword
   }
 }
 
 module node3 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
-  name:'node3'
+  name: 'node3'
   dependsOn: [
     controlnode
   ]
@@ -223,13 +223,13 @@ module node3 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
     vmSize: 'Standard_B2ms'
     adminUsername: 'azureuser'
     patchMode: 'ImageDefault'
-    provisionVMAgent:true
-    adminPassword:vmadminpassword
+    provisionVMAgent: true
+    adminPassword: vmadminpassword
   }
 }
 
 module controlnode 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
-  name:'controlnode'
+  name: 'controlnode'
   scope: k8sRG
   params: {
     name: controlnodename
@@ -246,7 +246,7 @@ module controlnode 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
             subnetResourceId: k8svnet.outputs.subnetResourceIds[0]
             pipConfiguration: {
               name: '${controlnodename}-pip'
-              location:Location
+              location: Location
               availabilityZones: [
                 1
               ]
@@ -288,18 +288,18 @@ module controlnode 'br/public:avm/res/compute/virtual-machine:0.22.2' = {
     vmSize: 'Standard_B2ms'
     adminUsername: 'azureuser'
     patchMode: 'ImageDefault'
-    provisionVMAgent:true
-    adminPassword:vmadminpassword
+    provisionVMAgent: true
+    adminPassword: vmadminpassword
   }
 }
 
 module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
-  name:'nsg'
+  name: 'nsg'
   scope: k8sRG
   params: {
     name: nsgname
-    location:Location
-    securityRules:[
+    location: Location
+    securityRules: [
       {
         name: 'allow-ssh-all'
         properties: {
@@ -309,9 +309,9 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           protocol: 'Tcp'
           description: 'Allow ssh inbound'
           destinationPortRange: '22'
-          sourcePortRange:'*'
-          destinationAddressPrefix:subnetIpRange
-          sourceAddressPrefixes:[
+          sourcePortRange: '*'
+          destinationAddressPrefix: subnetIpRange
+          sourceAddressPrefixes: [
             subnetIpRange
             PublicIPLearner
           ]
@@ -325,9 +325,9 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           priority: 201
           protocol: 'Tcp'
           destinationPortRange: '6443'
-          sourcePortRange:'*'
-          destinationAddressPrefix:subnetIpRange
-          sourceAddressPrefixes:[
+          sourcePortRange: '*'
+          destinationAddressPrefix: subnetIpRange
+          sourceAddressPrefixes: [
             subnetIpRange
             PublicIPLearner
           ]
@@ -340,12 +340,12 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 202
           protocol: 'Tcp'
-          sourcePortRange:'*'
-          destinationAddressPrefix:subnetIpRange
-          destinationPortRanges:[
+          sourcePortRange: '*'
+          destinationAddressPrefix: subnetIpRange
+          destinationPortRanges: [
             '30000-32767'
           ]
-          sourceAddressPrefixes:[
+          sourceAddressPrefixes: [
             subnetIpRange
             PublicIPLearner
           ]
@@ -358,10 +358,10 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 203
           protocol: 'Tcp'
-          sourcePortRange:'*'
+          sourcePortRange: '*'
           destinationPortRange: '10250'
-          sourceAddressPrefix:subnetIpRange
-          destinationAddressPrefix:subnetIpRange
+          sourceAddressPrefix: subnetIpRange
+          destinationAddressPrefix: subnetIpRange
         }
       }
       {
@@ -371,10 +371,10 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 204
           protocol: 'Icmp'
-          sourcePortRange:'*'
+          sourcePortRange: '*'
           destinationPortRange: '*'
-          destinationAddressPrefix:subnetIpRange
-          sourceAddressPrefix:subnetIpRange
+          destinationAddressPrefix: subnetIpRange
+          sourceAddressPrefix: subnetIpRange
         }
       }
       {
@@ -384,10 +384,10 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 205
           protocol: 'Icmp'
-          sourcePortRange:'*'
+          sourcePortRange: '*'
           destinationPortRange: '8443'
-          destinationAddressPrefix:subnetIpRange
-          sourceAddressPrefix:PublicIPLearner
+          destinationAddressPrefix: subnetIpRange
+          sourceAddressPrefix: PublicIPLearner
         }
       }
       {
@@ -400,12 +400,27 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           destinationPortRanges: [
             '179'
           ]
-          sourcePortRange:'*'
-          destinationAddressPrefix:subnetIpRange
-          sourceAddressPrefix:subnetIpRange
+          sourcePortRange: '*'
+          destinationAddressPrefix: subnetIpRange
+          sourceAddressPrefix: subnetIpRange
         }
       }
-            {
+      {
+        name: 'calico-typha'
+        properties: {
+          access: 'Allow'
+          direction: 'Inbound'
+          priority: 207
+          protocol: 'Tcp'
+          destinationPortRanges: [
+            '5473'
+          ]
+          sourcePortRange: '*'
+          destinationAddressPrefix: subnetIpRange
+          sourceAddressPrefix: subnetIpRange
+        }
+      }
+      {
         name: 'Calico-vxlan-mode'
         properties: {
           access: 'Allow'
@@ -415,9 +430,9 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           destinationPortRanges: [
             '4789'
           ]
-          sourcePortRange:'*'
-          destinationAddressPrefix:subnetIpRange
-          sourceAddressPrefix:subnetIpRange
+          sourcePortRange: '*'
+          destinationAddressPrefix: subnetIpRange
+          sourceAddressPrefix: subnetIpRange
         }
       }
       {
@@ -427,9 +442,9 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           direction: 'Inbound'
           priority: 1000
           protocol: 'Tcp'
-          sourceAddressPrefix:'*'
-          destinationAddressPrefix:'*'
-          sourcePortRange:'*'
+          sourceAddressPrefix: '*'
+          destinationAddressPrefix: '*'
+          sourcePortRange: '*'
           destinationPortRange: '*'
         }
       }
@@ -438,19 +453,18 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
 }
 
 module privdnszone 'br/public:avm/res/network/private-dns-zone:0.8.1' = {
-  name:'privdnszone'
+  name: 'privdnszone'
   scope: k8sRG
   params: {
     name: 'k8slearn.test'
-    location:'global'
+    location: 'global'
     virtualNetworkLinks: [
       {
         virtualNetworkResourceId: k8svnet.outputs.resourceId
-        registrationEnabled:true
+        registrationEnabled: true
       }
     ]
   }
 }
-
 
 output publicIpControlNode array = controlnode.outputs.nicConfigurations

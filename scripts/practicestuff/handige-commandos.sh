@@ -47,3 +47,6 @@ sudo mv ./calicoctl /usr/local/bin/
 
 
 kubectl logs -n kube-system calico-kube-controllers-6d76546c4c-zl9jm
+
+# Calico logs based on app tag
+kubectl logs -n calico-system -l k8s-app=calico-node --tail=100

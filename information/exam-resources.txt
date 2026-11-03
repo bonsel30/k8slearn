@@ -47,3 +47,5 @@ Exam domains:
         Use the Gateway API to manage Ingress traffic
         Know how to use Ingress controllers and Ingress resources
         Understand and use CoreDNS
+
+        https://sailor.sh/blog/cka-exam-domains-breakdown/

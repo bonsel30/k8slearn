@@ -21,6 +21,7 @@ param vmadminpassword string
 param nsgname string
 
 param PublicIPLearner string
+param PublicIpOffice string
 
 resource k8sRG 'Microsoft.Resources/resourceGroups@2025-04-01' = {
   name: RGName
@@ -314,6 +315,7 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           sourceAddressPrefixes: [
             subnetIpRange
             PublicIPLearner
+            PublicIpOffice
           ]
         }
       }

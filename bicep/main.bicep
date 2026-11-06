@@ -443,7 +443,7 @@ module nsg 'br/public:avm/res/network/network-security-group:0.5.3' = {
           access: 'Deny'
           direction: 'Inbound'
           priority: 1000
-          protocol: 'Tcp'
+          protocol: '*'
           sourceAddressPrefix: '*'
           destinationAddressPrefix: '*'
           sourcePortRange: '*'

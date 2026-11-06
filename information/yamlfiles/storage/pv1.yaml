@@ -9,3 +9,5 @@ spec:
     - ReadWriteOnce
   hostPath:
     path: "/data/pv1"
+
+#k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/pv1.yaml

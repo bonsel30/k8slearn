@@ -1,13 +1,11 @@
 Connect-AzAccount
 
-Set-AzContext -Subscription xxxx
-
 # curl whatismyip.com #werkt niet meer....
 # dit werkt wel:
 # Invoke-RestMethod https://api.ipify.org
 $PublicIPLearner = Invoke-RestMethod https://api.ipify.org
 
-#publicip wordt gebruikt in d ensg om alleen daarvan ssh toe te laten
+#publicip wordt gebruikt in de nsg om ssh open te zetten naar control-node
 
 $PlainPassword = Read-Host
 $SecurePassword = ConvertTo-SecureString $PlainPassword -AsPlainText -Force

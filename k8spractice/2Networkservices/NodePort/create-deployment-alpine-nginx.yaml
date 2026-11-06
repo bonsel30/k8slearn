@@ -22,4 +22,4 @@ spec:
         - containerPort: 80
 
 # k create namespace nginxalpine-ns
-# k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/deploypods/create-deployment-alpine-nginx.yaml -n nginxalpine-ns
+# k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/2Networkservices/NodePort/create-deployment-alpine-nginx.yaml -n nginxalpine-ns

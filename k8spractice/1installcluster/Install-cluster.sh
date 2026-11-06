@@ -126,7 +126,7 @@ sudo chown $(id -u):$(id -g) $HOME/.kube/config
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/v3_projectcalico_org.yaml
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/tigera-operator.yaml
   # kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.33.0/manifests/custom-resources.yaml
-kubectl create -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/calico-vxlan/customresources.yaml
+kubectl create -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/1installcluster/calico-vxlan/customresources.yaml
 
 watch kubectl get tigerastatus
 

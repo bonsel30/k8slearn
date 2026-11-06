@@ -12,4 +12,4 @@ spec:
     nodePort: 30081
     protocol: TCP
 
-# k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/deploypods/create-sevice.yml -n nginxalpine-ns
+# k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/2Networkservices/NodePort/create-sevice.yml -n nginxalpine-ns

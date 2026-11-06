@@ -10,4 +10,4 @@ spec:
   hostPath:
     path: "/data/pv1"
 
-#k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/1pv1.yaml
+#k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test1/1pv1.yaml

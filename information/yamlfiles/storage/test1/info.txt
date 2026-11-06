@@ -10,3 +10,5 @@ k delete -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/
 k delete -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/2pvc1.yaml -n pvc1test
 k delete pvc -n pv1test pvc1
 k delete -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/3pod-pvc1.yaml -n pv1test
+
+k delete namespaces pv1test

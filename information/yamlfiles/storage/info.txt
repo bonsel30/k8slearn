@@ -1,6 +1,0 @@
-k create namesapce pv1test
-k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/1pv1.yaml
-k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/2pvc1.yaml -n pvc1test
-k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/3pod-pvc1.yam -n pv1test
-
-kubectl exec -n pv1test -it storage-test-pod -- bash

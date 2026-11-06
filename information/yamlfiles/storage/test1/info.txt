@@ -4,6 +4,7 @@ k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/i
 k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/3pod-pvc1.yaml -n pv1test
 
 kubectl exec -n pv1test -it storage-test-pod -- bash
+mount van pv is in: /usr/share/nginx/html
 
 k delete -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/1pv1.yaml -n pvc1test
 k delete -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/information/yamlfiles/storage/2pvc1.yaml -n pvc1test

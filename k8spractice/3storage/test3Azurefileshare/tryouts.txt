@@ -3,3 +3,15 @@ https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs/azure/how-to/us
 
 
 k create namespace azstoragetest
+
+
+
+
+
+remote:       —— Azure Storage Account Access Key ——————————————————        
+remote:        locations:        
+remote:          - commit: f7b766441ba37a10db9c3b79f9d7f4e039214649        
+remote:            path: k8spractice/3storage/test3Azurefileshare/1azstoragekey.yaml:8        
+remote:             
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.        
+remote:        https://github.com/bonsel30/k8slearn/security/secret-scanning/unblock-secret/3LmdDeBusfWaOpyYTQl5cCN3JbE       

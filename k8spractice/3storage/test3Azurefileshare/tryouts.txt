@@ -1,1 +1,5 @@
 https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs/azure/how-to/use-azure-file
+
+
+
+k create namespace azstoragetest

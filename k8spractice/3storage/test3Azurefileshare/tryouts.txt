@@ -1,13 +1,20 @@
 https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs/azure/how-to/use-azure-file
 
-
-
 k create namespace azstoragetest
 
+wget https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test3Azurefileshare/1azstoragekey.yaml
+Verander storage key:
+nano 1azstoragekey.yaml
+
+k apply -f 1azstoragekey.yaml
+
+k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test3Azurefileshare/2pvazurefileshare.yaml
+
+k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test3Azurefileshare/3azure-pvc-and-pod.yaml
 
 
 
-
+Storagekey cannot be uploaded to github:
 remote:       —— Azure Storage Account Access Key ——————————————————        
 remote:        locations:        
 remote:          - commit: f7b766441ba37a10db9c3b79f9d7f4e039214649        

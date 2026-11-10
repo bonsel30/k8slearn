@@ -1,0 +1,1 @@
+Create storage account and resource group 4 storage account

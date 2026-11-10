@@ -41,6 +41,9 @@ module k8svnet 'br/public:avm/res/network/virtual-network:0.9.0' = {
         name: subnet1Name
         addressPrefix: subnetIpRange
         networkSecurityGroupResourceId: nsg.outputs.resourceId
+        serviceEndpoints: [
+          'Microsoft.Storage'
+        ]
       }
     ]
   }

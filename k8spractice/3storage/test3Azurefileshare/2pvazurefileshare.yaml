@@ -12,7 +12,7 @@ spec:
   csi:
     driver: file.csi.azure.com
     readOnly: false
-    volumeHandle: k8slearnstorage#k8slearnjbo#test1
+    volumeHandle: k8slearnstorage#k8slearnjbo#test1#
     nodeStageSecretRef:
       name: azure-secret-account-key
       namespace: azstoragetest

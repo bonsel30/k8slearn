@@ -1,6 +1,20 @@
 https://docs.cloud.google.com/kubernetes-engine/multi-cloud/docs/azure/how-to/use-azure-file
+https://stackoverflow.com/questions/65398908/cannot-mount-volume-to-pod-in-kubernetes-using-azure-file-provisioner
+
+
+https://github.com/kubernetes-sigs/azurefile-csi-driver/blob/master/docs/install-csi-driver-v1.35.7.md
+
+git clone https://github.com/kubernetes-sigs/azurefile-csi-driver.git
+cd azurefile-csi-driver
+git checkout v1.35.7
+./deploy/install-driver.sh v1.35.7 local
+
+
+
 
 k create namespace azstoragetest
+
+
 
 wget https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test3Azurefileshare/1azstoragekey.yaml
 Verander storage key:

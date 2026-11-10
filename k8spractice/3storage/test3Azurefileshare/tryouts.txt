@@ -6,11 +6,11 @@ wget https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8sprac
 Verander storage key:
 nano 1azstoragekey.yaml
 
-k apply -f 1azstoragekey.yaml
+k apply -f 1azstoragekey.yaml -n azstoragetest
 
-k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test3Azurefileshare/2pvazurefileshare.yaml
+k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test3Azurefileshare/2pvazurefileshare.yaml -n azstoragetest
 
-k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test3Azurefileshare/3azure-pvc-and-pod.yaml
+k apply -f https://raw.githubusercontent.com/bonsel30/k8slearn/refs/heads/main/k8spractice/3storage/test3Azurefileshare/3azure-pvc-and-pod.yaml -n azstoragetest
 
 
 

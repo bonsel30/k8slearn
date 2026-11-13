@@ -36,9 +36,15 @@ module Storaccount 'br/public:avm/res/storage/storage-account:0.33.1' = {
     kind:'StorageV2'
     accessTier:'Cool'
     fileServices:{
+      shareDeleteRetentionPolicy:{
+        enabled:false
+        allowPermanentDelete:true
+        // days: 1
+      }
       shares:[
         {
           name: Sharename
+          accessTier:'Cool'
         }
       ]
     }
@@ -67,5 +73,6 @@ module Storaccount 'br/public:avm/res/storage/storage-account:0.33.1' = {
         roleDefinitionIdOrName: 'Storage File Data SMB Share Reader'
       }
     ]
+    requireInfrastructureEncryption: false
   }
 }

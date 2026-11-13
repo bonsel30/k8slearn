@@ -4,14 +4,23 @@ param RGName string
 param Location string
 param StorageAccountName string
 param Sharename string
+param subnet1Name string
+
+
+var currentUserId = deployer().objectId
 
 resource ExistingK8slearnRg 'Microsoft.Resources/resourceGroups@2025-04-01' existing = {
   name: 'k8slearn'
 }
 
-resource ExistingVnet 'Microsoft.ScVmm/virtualNetworks@2025-03-13' existing = {
+resource ExistingVnet 'Microsoft.Network/virtualNetworks@2026-03-01' existing = {
   name: 'k8s-test'
   scope: ExistingK8slearnRg
+}
+
+resource existingSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-09-01' existing = {
+  parent: ExistingVnet
+  name: subnet1Name
 }
 
 resource StorageResourcegroup 'Microsoft.Resources/resourceGroups@2025-04-01' = {
@@ -19,7 +28,7 @@ resource StorageResourcegroup 'Microsoft.Resources/resourceGroups@2025-04-01' = 
   location: Location
 }
 
-module storaccount 'br/public:avm/res/storage/storage-account:0.33.1' = {
+module Storaccount 'br/public:avm/res/storage/storage-account:0.33.1' = {
   scope: StorageResourcegroup
   params: {
     name: StorageAccountName
@@ -36,14 +45,14 @@ module storaccount 'br/public:avm/res/storage/storage-account:0.33.1' = {
     networkAcls:{
       virtualNetworkRules:[
         {
-        id: 'vExistingVnet.id/subnets/subnet1'
+        id: existingSubnet.id
         action: 'Allow'
         }
       ]
     }
     roleAssignments:[
       {
-        principalId: 'ccccccc'
+        principalId: currentUserId
         roleDefinitionIdOrName: 'Storage File Data SMB Share Reader'
       }
     ]

@@ -5,7 +5,8 @@ param Location string
 param StorageAccountName string
 param Sharename string
 param subnet1Name string
-
+param PublicIPLearner string
+param PublicIpOffice string
 
 var currentUserId = deployer().objectId
 
@@ -47,6 +48,16 @@ module Storaccount 'br/public:avm/res/storage/storage-account:0.33.1' = {
         {
         id: existingSubnet.id
         action: 'Allow'
+        }
+      ]
+      ipRules:[
+        {
+          value: PublicIPLearner
+          action: 'Allow'
+        }
+        {
+          value: PublicIpOffice
+          action: 'Allow'
         }
       ]
     }
